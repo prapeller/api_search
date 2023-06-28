@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  postgres_search:
+    env_file:
+      - .envs/.prod/.postgres
+
+  redis_search:
+    env_file:
+      - .envs/.prod/.redis
+
+  elastic_search:
+    env_file:
+      - .envs/.prod/.elastic
+
+  api_search:
+    build:
+      args:
+        - BUILD_ENV=prod
+    command: /start_prod
+    env_file:
+      - .envs/.prod/.postgres
+      - .envs/.prod/.api
+      - .envs/.prod/.redis
+
+  nginx_search:
+    env_file:
+      - .envs/.prod/.api

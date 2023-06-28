@@ -1,0 +1,62 @@
+version: "3.9"
+
+services:
+  postgres_search:
+    env_file:
+      - ./.envs/.docker-compose-local/.postgres
+    ports:
+      - "5434:5432"
+
+  elastic_search:
+    env_file:
+      - ./.envs/.docker-compose-local/.elastic
+    ports:
+      - "9200:9200"
+
+  redis_search:
+    env_file:
+      - ./.envs/.docker-compose-local/.redis
+    ports:
+      - "6380:6380"
+
+  api_search:
+    build:
+      args:
+        - BUILD_ENV=local
+    command: /start_local
+    ports:
+      - "8081:8081"
+    env_file:
+      - ./.envs/.docker-compose-local/.postgres
+      - ./.envs/.docker-compose-local/.api
+      - ./.envs/.docker-compose-local/.redis
+
+  nginx_search:
+    env_file:
+      - .envs/.docker-compose-local/.api
+
+  tests_search:
+    build:
+      context: .
+      dockerfile: ./docker/tests/Dockerfile
+      args:
+        - BUILD_ENV=local
+    command: /start
+    container_name: tests
+    volumes:
+      - .:/app
+    env_file:
+      - ./.envs/.docker-compose-local/.tests
+      - ./.envs/.docker-compose-local/.redis
+    depends_on:
+      postgres_search:
+        condition: service_healthy
+      redis_search:
+        condition: service_healthy
+      elastic_search:
+        condition: service_healthy
+      api_search:
+        condition: service_healthy
+    networks:
+      - local_network_search
+

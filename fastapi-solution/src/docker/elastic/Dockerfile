@@ -1,0 +1,1 @@
+FROM docker.elastic.co/elasticsearch/elasticsearch:8.6.2@sha256:1c53c89d04f207beb99d56cc4a1cc23516bd9c386858843d5082a98257c04d1c

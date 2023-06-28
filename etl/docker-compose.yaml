@@ -1,0 +1,6 @@
+services:
+  etl:
+    container_name: etl
+    build: .
+    env_file:
+      - ./etl/docker.env

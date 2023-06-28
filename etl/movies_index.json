@@ -1,0 +1,161 @@
+{
+    "mappings": {
+        "dynamic": "strict",
+        "properties": {
+            "id": {
+                "type": "keyword"
+            },
+            "imdb_rating": {
+                "type": "float"
+            },
+            "title": {
+                "type": "text",
+                "analyzer": "ru_en",
+                "fields": {
+                    "raw": {
+                        "type": "keyword"
+                    }
+                }
+            },
+            "genre": {
+                "type": "nested",
+                "dynamic": "strict",
+                "properties": {
+                    "id": {
+                        "type": "keyword"
+                    },
+                    "name": {
+                        "type": "text",
+                        "analyzer": "ru_en",
+                        "fields": {
+                            "raw": {
+                                "type": "keyword"
+                            }
+                        }
+                    }
+                }
+            },
+            "description": {
+                "type": "text",
+                "analyzer": "ru_en",
+                "fields": {
+                    "raw": {
+                        "type": "keyword"
+                    }
+                }
+            },
+            "director": {
+                "type": "nested",
+                "dynamic": "strict",
+                "properties": {
+                    "id": {
+                        "type": "keyword"
+                    },
+                    "name": {
+                        "type": "text",
+                        "analyzer": "ru_en",
+                        "fields": {
+                            "raw": {
+                                "type": "keyword"
+                            }
+                        }
+                    }
+                }
+            },
+            "actors": {
+                "type": "nested",
+                "dynamic": "strict",
+                "properties": {
+                    "id": {
+                        "type": "keyword"
+                    },
+                    "name": {
+                        "analyzer": "ru_en",
+                        "type": "text",
+                        "fields": {
+                            "raw": {
+                                "type": "keyword"
+                            }
+                        }
+                    }
+                }
+            },
+            "actors_names": {
+                "type": "text",
+                "analyzer": "ru_en",
+                "fields": {
+                    "raw": {
+                        "type": "keyword"
+                    }
+                }
+            },
+            "writers": {
+                "type": "nested",
+                "dynamic": "strict",
+                "properties": {
+                    "id": {
+                        "type": "keyword"
+                    },
+                    "name": {
+                        "type": "text",
+                        "analyzer": "ru_en",
+                        "fields": {
+                            "raw": {
+                                "type": "keyword"
+                            }
+                        }
+                    }
+                }
+            },
+            "writers_names": {
+                "type": "text",
+                "analyzer": "ru_en",
+                "fields": {
+                    "raw": {
+                        "type": "keyword"
+                    }
+                }
+            }
+        }
+    },
+    "settings": {
+        "analysis": {
+            "analyzer": {
+                "ru_en": {
+                    "filter": [
+                        "lowercase",
+                        "english_stop",
+                        "english_stemmer",
+                        "english_possessive_stemmer",
+                        "russian_stop",
+                        "russian_stemmer"
+                    ],
+                    "tokenizer": "standard"
+                }
+            },
+            "filter": {
+                "english_possessive_stemmer": {
+                    "language": "possessive_english",
+                    "type": "stemmer"
+                },
+                "english_stemmer": {
+                    "language": "english",
+                    "type": "stemmer"
+                },
+                "english_stop": {
+                    "stopwords": "_english_",
+                    "type": "stop"
+                },
+                "russian_stemmer": {
+                    "language": "russian",
+                    "type": "stemmer"
+                },
+                "russian_stop": {
+                    "stopwords": "_russian_",
+                    "type": "stop"
+                }
+            }
+        },
+        "refresh_interval": "1s"
+    }
+}
