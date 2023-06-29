@@ -10,3 +10,4 @@ uvloop==0.17.0 ; sys_platform != "win32" and implementation_name == "cpython"
 psycopg2-binary==2.9.6
 python-multipart==0.0.6
 backoff==2.2.1
+requests==2.31.0
