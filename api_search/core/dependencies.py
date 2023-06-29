@@ -3,10 +3,13 @@ from functools import lru_cache
 
 import fastapi as fa
 import pydantic as pd
+import requests
 from elasticsearch import AsyncElasticsearch
 from fastapi import Depends
+from fastapi.security import OAuth2PasswordBearer
 from redis.asyncio import Redis
 
+from core.config import settings
 from core.enums import (
     FilterConditionsEnum,
     FilmFilterByEnum,
@@ -14,6 +17,7 @@ from core.enums import (
     PersonFilterByEnum,
     ElasticIndexEnum,
 )
+from core.exceptions import UnauthorizedException
 from db.models.film import Film
 from db.models.genre import Genre
 from db.models.person import PersonFilms
@@ -110,3 +114,22 @@ def es_service_person_dependency(
         elastic: AsyncElasticsearch = Depends(elastic_dependency),
 ):
     return es_service_dependency(ElasticIndexEnum.persons, PersonFilms, cache, elastic)
+
+
+oauth2_scheme_local = OAuth2PasswordBearer(
+    tokenUrl=f"http://{settings.AUTH_API_HOST}:{settings.AUTH_API_PORT}/api/v1/auth/login")
+
+
+async def verified_access_token_dependency(request: fa.Request,
+                                           access_token: str = fa.Depends(oauth2_scheme_local),
+                                           ):
+    data = {'useragent': request.headers.get("user-agent"), 'ip': request.client.host, 'access_token': access_token}
+    url = f"http://{settings.AUTH_API_HOST}:{settings.AUTH_API_PORT}/api/v1/auth/verify-access-token"
+    headers = {
+        'accept': 'application/json',
+        'Content-Type': 'application/json'
+    }
+
+    resp = requests.post(url=url, headers=headers, json=data)
+    if resp.status_code != 200 or resp.text == 'null':
+        raise UnauthorizedException

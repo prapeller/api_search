@@ -125,6 +125,9 @@ class PersonFilterByEnum(str, Enum):
 
 
 class ResponseDetailEnum(str, Enum):
+    ok = 'ok'
+    unauthorized = 'Unauthorized for this action.'
+    invalid_credentials = 'Invalid credentials were provided.'
     films_not_found = 'films not found'
     film_not_found = 'film not found'
     genres_not_found = 'genres not found'

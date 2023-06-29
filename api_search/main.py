@@ -10,6 +10,7 @@ from api.v1.films import FilmsRouterV1
 from api.v1.genres import GenresRouterV1
 from api.v1.persons import PersonsRouterV1
 from core.config import settings
+from core.dependencies import verified_access_token_dependency
 
 app = fa.FastAPI(
     title=settings.PROJECT_NAME,
@@ -31,7 +32,9 @@ async def shutdown():
     await core.dependencies.es.close()
 
 
-v1_router = fa.APIRouter()
+v1_router = fa.APIRouter(
+    dependencies=[fa.Depends(verified_access_token_dependency)]
+)
 v1_router.include_router(FilmsRouterV1().router, prefix='/films', tags=['films'])
 v1_router.include_router(GenresRouterV1().router, prefix='/genres', tags=['genres'])
 v1_router.include_router(PersonsRouterV1().router, prefix='/persons', tags=['persons'])
