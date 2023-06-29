@@ -3,7 +3,6 @@ from enum import Enum
 
 import fastapi as fa
 import pydantic as pd
-from fastapi import Depends
 
 from core.dependencies import pagination_params_dependency
 from core.enums import OrderEnum
@@ -13,8 +12,8 @@ from services.searchservice import SearchService
 class Router:
     order_by_enum: Enum | None
     order_by_default: str
-    filter_params_dependency: Depends
-    search_service_dependency: Depends
+    filter_params_dependency: fa.Depends
+    search_service_dependency: fa.Depends
     objs_not_found_detail: str
     obj_not_found_detail: str
     paginated_objs_response_model: type[pd.BaseModel]

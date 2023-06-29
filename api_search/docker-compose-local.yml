@@ -42,7 +42,7 @@ services:
       args:
         - BUILD_ENV=local
     command: /start
-    container_name: tests
+    container_name: tests_search
     volumes:
       - .:/app
     env_file:

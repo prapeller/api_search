@@ -1,6 +1,8 @@
 from api.v1.shared import Router
 from core.dependencies import (
-    genre_filter_params_dependency, es_service_genre_dependency)
+    genre_filter_params_dependency,
+    es_service_genre_dependency
+)
 from core.enums import ResponseDetailEnum, GenreOrderByEnum
 from db.models.genre import Genre, PaginatedGenres
 

@@ -105,7 +105,7 @@ celerybeat.pid
 
 # Environments
 venv/
-fastapi-solution/venv/
+api_search/venv/
 ENV/
 env.bak/
 venv.bak/
@@ -135,7 +135,7 @@ dmypy.json
 my_files/
 
 # Project files should stay locally only
-fastapi-solution/src/.envs/.prod*
-fastapi-solution/src/.envs/.local*
-fastapi-solution/src/.envs/.docker-compose-local*
-fastapi-solution/src/staticfiles/backups/*
+api_search/.envs/.prod*
+api_search/.envs/.local*
+api_search/.envs/.docker-compose-local*
+api_search/staticfiles/backups/*

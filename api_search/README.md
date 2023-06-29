@@ -4,7 +4,7 @@ https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-o
 https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04
 -  rename .envs/.example to .envs/.local, set your variables
 - > python3.11 -m venv venv
-- > source venv/bin/activate && pip install -r fastapi-solution/src/requirements/local.txt && cd fastapi-solution/src
+- > source venv/bin/activate && pip install -r api_search/requirements/local.txt && cd api_search/src
 - > make build-redis-loc
 - > make build-elastic-loc
 - > export DEBUG=True
@@ -19,7 +19,7 @@ https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-c
 # 2) Run locally in docker-compose
 - install docker, docker-compose
 -  rename .envs/.example to .envs/.docker-compose-local, set your variables
-- > cd fastapi-solution/src
+- > cd api_search/src
 - > make build-loc
 
 - swagger can be found at 127.0.0.1/[DOCS_URL]
