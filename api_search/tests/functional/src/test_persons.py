@@ -19,7 +19,7 @@ async def test_get_api_v1_persons_list(es_load_test_objs, es_delete_by_ids, body
      """
     ids, persons_25 = get_ids_persons(qty=25)
     await es_load_test_objs(persons_25, test_settings.ELASTIC_INDEX_PERSONS)
-    url = f'http://{test_settings.API_HOST}:{test_settings.API_PORT}/api/v1/persons'
+    url = f'http://{test_settings.API_SEARCH_HOST}:{test_settings.API_SEARCH_PORT}/api/v1/persons'
 
     body, status = await body_status(url)
 
@@ -38,7 +38,7 @@ async def test_get_api_v1_persons_search_existing(es_load_test_objs, es_delete_b
      """
     ids, persons_25 = get_ids_persons(qty=25)
     await es_load_test_objs(persons_25, test_settings.ELASTIC_INDEX_PERSONS)
-    url = f'http://{test_settings.API_HOST}:{test_settings.API_PORT}/api/v1/persons/search'
+    url = f'http://{test_settings.API_SEARCH_HOST}:{test_settings.API_SEARCH_PORT}/api/v1/persons/search'
     query_params = {'field': PersonFilterByEnum.name, 'condition': FilterConditionsEnum.includes,
                     'value': 'Test Person'}
 
@@ -56,7 +56,7 @@ async def test_get_api_v1_persons_search_not_existing(body_status):
      - status 404
      - response body with explanation value string by 'detail' key string
      """
-    url = f'http://{test_settings.API_HOST}:{test_settings.API_PORT}/api/v1/persons/search'
+    url = f'http://{test_settings.API_SEARCH_HOST}:{test_settings.API_SEARCH_PORT}/api/v1/persons/search'
     query_params = {'field': PersonFilterByEnum.name, 'condition': FilterConditionsEnum.includes,
                     'value': 'abracadabra'}
 
@@ -73,7 +73,7 @@ async def test_get_api_v1_persons_search_not_valid_params(es_load_test_objs, es_
      """
     ids, persons_25 = get_ids_persons(qty=25)
     await es_load_test_objs(persons_25, test_settings.ELASTIC_INDEX_PERSONS)
-    url = f'http://{test_settings.API_HOST}:{test_settings.API_PORT}/api/v1/persons/search'
+    url = f'http://{test_settings.API_SEARCH_HOST}:{test_settings.API_SEARCH_PORT}/api/v1/persons/search'
     query_params = {'field': 'not_existing_field', 'condition': 'not_existing_cond', 'value': 'Test Person'}
 
     body, status = await body_status(url, query_params)
@@ -91,7 +91,7 @@ async def test_get_api_v1_persons_by_id(es_load_test_objs, es_delete_by_ids, bod
      """
     ids, persons_1 = get_ids_persons(qty=1)
     await es_load_test_objs(persons_1, test_settings.ELASTIC_INDEX_PERSONS)
-    url = f'http://{test_settings.API_HOST}:{test_settings.API_PORT}/api/v1/persons/{ids[0]}'
+    url = f'http://{test_settings.API_SEARCH_HOST}:{test_settings.API_SEARCH_PORT}/api/v1/persons/{ids[0]}'
 
     body, status = await body_status(url)
 
@@ -108,7 +108,7 @@ async def test_get_api_v1_persons_by_not_valid_id(es_load_test_objs, es_delete_b
      """
     ids, persons_1 = get_ids_persons(qty=1)
     await es_load_test_objs(persons_1, test_settings.ELASTIC_INDEX_PERSONS)
-    url = f'http://{test_settings.API_HOST}:{test_settings.API_PORT}/api/v1/persons/not-a-uuid'
+    url = f'http://{test_settings.API_SEARCH_HOST}:{test_settings.API_SEARCH_PORT}/api/v1/persons/not-a-uuid'
 
     body, status = await body_status(url)
 

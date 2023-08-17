@@ -32,15 +32,18 @@ async def shutdown():
     await core.dependencies.es.close()
 
 
-v1_router = fa.APIRouter(
+v1_router_auth = fa.APIRouter(
     dependencies=[fa.Depends(verified_access_token_dependency)]
 )
-v1_router.include_router(FilmsRouterV1().router, prefix='/films', tags=['films'])
-v1_router.include_router(GenresRouterV1().router, prefix='/genres', tags=['genres'])
-v1_router.include_router(PersonsRouterV1().router, prefix='/persons', tags=['persons'])
-v1_router.include_router(v1_postgres.router, prefix='/postgres', tags=['postgres'])
+v1_router_auth.include_router(FilmsRouterV1().router, prefix='/films', tags=['films'])
+v1_router_auth.include_router(GenresRouterV1().router, prefix='/genres', tags=['genres'])
+v1_router_auth.include_router(PersonsRouterV1().router, prefix='/persons', tags=['persons'])
 
-app.include_router(v1_router, prefix="/api/v1")
+v1_router_public = fa.APIRouter()
+v1_router_public.include_router(v1_postgres.router, prefix='/postgres', tags=['postgres'])
+
+app.include_router(v1_router_auth, prefix="/api/v1")
+app.include_router(v1_router_public, prefix="/api/v1")
 
 if __name__ == "__main__":
-    uvicorn.run('main:app', host=settings.API_HOST, port=settings.API_PORT, reload=True)
+    uvicorn.run('main:app', host=settings.API_SEARCH_HOST, port=settings.API_SEARCH_PORT, reload=True)

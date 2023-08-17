@@ -42,8 +42,8 @@ services:
       - local_network_search
     healthcheck:
       test: [ "CMD-SHELL", "redis-cli", "ping", "|", "grep", "PONG" ]
-      interval: 1s
-      retries: 30
+      interval: 3s
+      retries: 3
 
   api_search:
     build:
@@ -66,10 +66,11 @@ services:
         condition: service_healthy
     networks:
       - local_network_search
+      - shared_network
     healthcheck:
-      test: [ "CMD", "curl", "--fail", "-f", "http://api_search:8081/docs" ]
-      interval: 1s
-      retries: 30
+      test: [ "CMD-SHELL", "curl --fail -f http://$$API_SEARCH_HOST:$$API_SEARCH_PORT/docs" ]
+      interval: 3s
+      retries: 3
 
   nginx_search:
     restart: always
@@ -82,8 +83,6 @@ services:
       - media_volume:/app/mediafiles
     ports:
       - "80:80"
-    env_file:
-      - .envs/.docker-compose-local/.api
     depends_on:
       - api_search
     networks:
@@ -93,6 +92,8 @@ services:
 networks:
   local_network_search:
     driver: bridge
+  shared_network:
+    external: true
 
 volumes:
   local_postgres_data: { }

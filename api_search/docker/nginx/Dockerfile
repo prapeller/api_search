@@ -7,5 +7,5 @@ RUN rm /etc/nginx/conf.d/default.conf
 COPY ./docker/nginx/default.conf /etc/nginx/conf.d/default.conf
 
 RUN sed -i '38 i sed -i "s/DOCS_URL/${DOCS_URL}/g" /etc/nginx/conf.d/default.conf' /docker-entrypoint.sh
-RUN sed -i '38 i sed -i "s/API_HOST/${API_HOST}/g" /etc/nginx/conf.d/default.conf' /docker-entrypoint.sh
-RUN sed -i '38 i sed -i "s/API_PORT/${API_PORT}/g" /etc/nginx/conf.d/default.conf' /docker-entrypoint.sh
+RUN sed -i '38 i sed -i "s/API_SEARCH_HOST/${API_SEARCH_HOST}/g" /etc/nginx/conf.d/default.conf' /docker-entrypoint.sh
+RUN sed -i '38 i sed -i "s/API_SEARCH_PORT/${API_SEARCH_PORT}/g" /etc/nginx/conf.d/default.conf' /docker-entrypoint.sh

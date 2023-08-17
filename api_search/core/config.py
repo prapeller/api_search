@@ -12,11 +12,11 @@ logging_config.dictConfig(LOGGING)
 class Settings(pd.BaseSettings):
     PROJECT_NAME: str = 'movies'
 
-    API_HOST: str = '127.0.0.1'
-    API_PORT: int = 8081
+    API_SEARCH_HOST: str = '127.0.0.1'
+    API_SEARCH_PORT: int = 8081
 
-    AUTH_API_HOST: str = '127.0.0.1'
-    AUTH_API_PORT: int = 8080
+    API_AUTH_HOST: str = '127.0.0.1'
+    API_AUTH_PORT: int = 81
 
     REDIS_HOST: str = '127.0.0.1'
     REDIS_PORT: int = 6379

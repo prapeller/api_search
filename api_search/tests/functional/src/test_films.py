@@ -20,7 +20,7 @@ async def test_get_api_v1_films_list(es_load_test_objs, es_delete_by_ids, body_s
      """
     ids, films_25 = get_ids_films(qty=25)
     await es_load_test_objs(films_25, test_settings.ELASTIC_INDEX_MOVIES)
-    url = f'http://{test_settings.API_HOST}:{test_settings.API_PORT}/api/v1/films'
+    url = f'http://{test_settings.API_SEARCH_HOST}:{test_settings.API_SEARCH_PORT}/api/v1/films'
 
     body, status = await body_status(url)
 
@@ -40,7 +40,7 @@ async def test_get_api_v1_films_search_existing(es_load_test_objs, es_delete_by_
      """
     ids, films_25 = get_ids_films(25)
     await es_load_test_objs(films_25, test_settings.ELASTIC_INDEX_MOVIES)
-    url = f'http://{test_settings.API_HOST}:{test_settings.API_PORT}/api/v1/films/search'
+    url = f'http://{test_settings.API_SEARCH_HOST}:{test_settings.API_SEARCH_PORT}/api/v1/films/search'
     query_params = {'field': FilmFilterByEnum.title, 'condition': FilterConditionsEnum.includes, 'value': 'Test Title'}
 
     body, status = await body_status(url, query_params)
@@ -57,7 +57,7 @@ async def test_get_api_v1_films_search_not_existing(body_status):
      - status 404
      - response body with explanation value string by 'detail' key string
      """
-    url = f'http://{test_settings.API_HOST}:{test_settings.API_PORT}/api/v1/films/search'
+    url = f'http://{test_settings.API_SEARCH_HOST}:{test_settings.API_SEARCH_PORT}/api/v1/films/search'
     query_params = {'field': FilmFilterByEnum.title, 'condition': FilterConditionsEnum.includes, 'value': 'abracadabra'}
 
     body, status = await body_status(url, query_params)
@@ -73,7 +73,7 @@ async def test_get_api_v1_films_search_not_valid_params(es_load_test_objs, es_de
      """
     ids, films_25 = get_ids_films(25)
     await es_load_test_objs(films_25, test_settings.ELASTIC_INDEX_MOVIES)
-    url = f'http://{test_settings.API_HOST}:{test_settings.API_PORT}/api/v1/films/search'
+    url = f'http://{test_settings.API_SEARCH_HOST}:{test_settings.API_SEARCH_PORT}/api/v1/films/search'
     query_params = {'field': 'not_existing_field', 'condition': 'not_existing_cond', 'value': 'Test Title'}
 
     body, status = await body_status(url, query_params)
@@ -91,7 +91,7 @@ async def test_get_api_v1_films_by_id(es_load_test_objs, es_delete_by_ids, body_
      """
     ids, films_1 = get_ids_films(1)
     await es_load_test_objs(films_1, test_settings.ELASTIC_INDEX_MOVIES)
-    url = f'http://{test_settings.API_HOST}:{test_settings.API_PORT}/api/v1/films/{ids[0]}'
+    url = f'http://{test_settings.API_SEARCH_HOST}:{test_settings.API_SEARCH_PORT}/api/v1/films/{ids[0]}'
 
     body, status = await body_status(url)
 
@@ -108,7 +108,7 @@ async def test_get_api_v1_films_by_not_valid_id(es_load_test_objs, es_delete_by_
      """
     ids, films_1 = get_ids_films(1)
     await es_load_test_objs(films_1, test_settings.ELASTIC_INDEX_MOVIES)
-    url = f'http://{test_settings.API_HOST}:{test_settings.API_PORT}/api/v1/films/not-a-uuid'
+    url = f'http://{test_settings.API_SEARCH_HOST}:{test_settings.API_SEARCH_PORT}/api/v1/films/not-a-uuid'
 
     body, status = await body_status(url)
 

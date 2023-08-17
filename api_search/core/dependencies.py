@@ -1,9 +1,10 @@
+import json
 import typing as tp
 from functools import lru_cache
 
 import fastapi as fa
+import httpx
 import pydantic as pd
-import requests
 from elasticsearch import AsyncElasticsearch
 from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
@@ -117,19 +118,25 @@ def es_service_person_dependency(
 
 
 oauth2_scheme_local = OAuth2PasswordBearer(
-    tokenUrl=f"http://{settings.AUTH_API_HOST}:{settings.AUTH_API_PORT}/api/v1/auth/login")
+    tokenUrl=f"http://{settings.API_AUTH_HOST}:{settings.API_AUTH_PORT}/api/v1/auth/login")
 
 
-async def verified_access_token_dependency(request: fa.Request,
-                                           access_token: str = fa.Depends(oauth2_scheme_local),
-                                           ):
-    data = {'useragent': request.headers.get("user-agent"), 'ip': request.client.host, 'access_token': access_token}
-    url = f"http://{settings.AUTH_API_HOST}:{settings.AUTH_API_PORT}/api/v1/auth/verify-access-token"
+async def verified_access_token_dependency(
+        request: fa.Request,
+        access_token: str = fa.Depends(oauth2_scheme_local),
+):
+    url = f"http://{settings.API_AUTH_HOST}:{settings.API_AUTH_PORT}/api/v1/auth/verify-access-token"
     headers = {
         'accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
     }
-
-    resp = requests.post(url=url, headers=headers, json=data)
-    if resp.status_code != 200 or resp.text == 'null':
+    data = {
+        'useragent': request.headers.get("user-agent"),
+        'ip': request.client.host,
+        'access_token': access_token,
+    }
+    async with httpx.AsyncClient() as client:
+        resp = await client.post(url, headers=headers, json=data)
+    if resp.status_code != fa.status.HTTP_200_OK:
         raise UnauthorizedException
+    return json.loads(resp.text)
