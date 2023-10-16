@@ -1,0 +1,118 @@
+version: "3.9"
+
+services:
+
+  redis_search:
+    build:
+      context: ../..
+      dockerfile: ./docker/api/redis/Dockerfile
+    container_name: redis_search
+    healthcheck:
+      test: [ "CMD-SHELL", "redis-cli", "ping", "|", "grep", "PONG" ]
+      interval: 3s
+      retries: 3
+    networks:
+      - local_network_search
+    env_file:
+      - ../../.envs/.docker-compose-local/.redis
+    ports:
+      - "6384:6379"
+
+  api_search:
+    build:
+      context: ../..
+      dockerfile: ./docker/api/Dockerfile
+      args:
+        - BUILD_ENV=local
+    container_name: api_search
+    command: /start_local
+    volumes:
+      - static_files_search_volume:/app/staticfiles
+      - media_files_search_volume:/app/mediafiles
+      - postgres_backups_search_volume:/app/staticfiles/backups
+      - ../..:/app
+    healthcheck:
+      test: [ "CMD-SHELL", "curl --fail -f http://$$API_SEARCH_HOST:$$API_SEARCH_PORT/docs" ]
+      interval: 3s
+      retries: 3
+    env_file:
+      - ../../.envs/.docker-compose-local/.postgres
+      - ../../.envs/.docker-compose-local/.api
+      - ../../.envs/.docker-compose-local/.redis
+    networks:
+      - local_network_search
+      - shared_network
+    expose:
+      - "8084"
+    ports:
+      - "8084:8084"
+
+  etl_postgres_to_elastic_search:
+    restart: always
+    build:
+      context: ../..
+      dockerfile: ./docker/api/Dockerfile
+      args:
+        - BUILD_ENV=local
+    command: /start_etl_local
+    volumes:
+      - ../..:/app
+    networks:
+      - local_network_search
+      - shared_network
+    env_file:
+      - ../../.envs/.docker-compose-local/.api
+      - ../../.envs/.docker-compose-local/.redis
+      - ../../.envs/.docker-compose-local/.elastic
+      - ../../.envs/.docker-compose-local/.postgres
+
+
+  nginx_search:
+    restart: always
+    build:
+      context: ../..
+      dockerfile: ./docker/api/nginx/Dockerfile
+    container_name: nginx_search
+    env_file:
+      - ../../.envs/.docker-compose-local/.api
+    volumes:
+      - static_files_search_volume:/app/staticfiles
+      - media_files_search_volume:/app/mediafiles
+    ports:
+      - "84:84"
+    depends_on:
+      - api_search
+    networks:
+      - local_network_search
+      - shared_network
+
+  tests_search:
+    build:
+      context: ../..
+      dockerfile: ./docker/api/Dockerfile
+      args:
+        - BUILD_ENV=local
+    command: /start_tests
+    container_name: tests_search
+    volumes:
+      - ../..:/app
+    env_file:
+      - ../../.envs/.docker-compose-local/.tests
+      - ../../.envs/.docker-compose-local/.redis
+    depends_on:
+      api_search:
+        condition: service_healthy
+    networks:
+      - local_network_search
+
+
+networks:
+  local_network_search:
+    driver: bridge
+  shared_network:
+    external: true
+
+volumes:
+  static_files_search_volume:
+  media_files_search_volume:
+  postgres_backups_search_volume:

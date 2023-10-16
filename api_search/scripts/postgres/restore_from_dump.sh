@@ -6,7 +6,7 @@ set -o nounset # if none of variables set, exit
 
 working_dir="$(dirname ${0})"
 
-source "${working_dir}/../../.envs/.${ENV}/.postgres"
+source "${working_dir}/../../../.envs/.${ENV}/.postgres"
 source "${working_dir}/messages.sh"
 
 message_welcome "Restoring to '${POSTGRES_DB}' database..."

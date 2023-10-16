@@ -1,0 +1,11 @@
+DEBUG=True
+DOCKER=True
+
+API_SEARCH_HOST=api_search
+API_SEARCH_PORT=8084
+
+API_AUTH_HOST=nginx_auth
+API_AUTH_PORT=81
+
+PROJECT_NAME=api_search
+DOCS_URL=docs

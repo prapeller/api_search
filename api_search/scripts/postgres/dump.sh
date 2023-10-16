@@ -2,7 +2,7 @@
 
 working_dir="$(dirname ${0})"
 
-source "${working_dir}/../../.envs/.${ENV}/.postgres"
+source "${working_dir}/../../../.envs/.${ENV}/.postgres"
 source "${working_dir}/messages.sh"
 
 message_welcome "Backing up the '${POSTGRES_DB}' database..."

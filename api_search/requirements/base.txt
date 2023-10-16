@@ -1,8 +1,7 @@
 python-dotenv==0.21.1
 redis==4.5.4
-elasticsearch==7.17.9
-elasticsearch-dsl==7.4.1
-fastapi==0.95.1
+fastapi==0.103.1
+pydantic-settings==2.0.3
 orjson==3.8.10
 uvicorn==0.21.1
 aiohttp==3.8.4
@@ -12,3 +11,10 @@ python-multipart==0.0.6
 backoff==2.2.1
 requests==2.31.0
 httpx==0.24.1
+
+elasticsearch==7.17.9
+elasticsearch-dsl==7.4.1
+elastic-transport==8.4.0
+
+certifi==2022.12.7
+urllib3==1.26.15

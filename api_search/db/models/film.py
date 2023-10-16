@@ -28,4 +28,4 @@ class PaginatedFilmsReadTitleRating(pd.BaseModel):
 from db.models.person import Person
 from db.models.genre import Genre
 
-Film.update_forward_refs()
+Film.model_rebuild()

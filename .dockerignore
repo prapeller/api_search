@@ -109,8 +109,8 @@ ENV/
 env.bak/
 venv.bak/
 mkenv.sh
-etl/.env
-etl/state
+etl_postgres_to_elastic/.env
+etl_postgres_to_elastic/state
 
 # Spyder project settings
 .spyderproject
@@ -135,8 +135,6 @@ my_files/
 
 # Project files should stay locally only
 api_search/.envs/.prod*
-api_search/.envs/.local*
-api_search/.envs/.docker-compose-local*
 api_search/staticfiles/backups/*
 
 README.md

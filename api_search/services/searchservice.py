@@ -8,7 +8,7 @@ from elasticsearch import (AsyncElasticsearch, NotFoundError,
                            ConnectionError, ConnectionTimeout, TransportError)
 from elasticsearch_dsl import Q
 
-from core.config import settings
+from core import config
 from core.enums import ElasticIndexEnum, FilterConditionsEnum
 from db.models.film import Film
 from db.models.genre import Genre
@@ -72,7 +72,7 @@ class ElasticSearchService(SearchService):
     @backoff.on_exception(backoff.expo,
                           (ConnectionError, TransportError,
                            ConnectionTimeout, ConnectionRefusedError),
-                          max_time=settings.ELASTIC_BACKOFF_MAX_TIME_SEC,
+                          max_time=config.ELASTIC_BACKOFF_MAX_TIME_SEC,
                           jitter=None,
                           on_backoff=elastic_backoff)
     async def count(self) -> int:
@@ -82,7 +82,7 @@ class ElasticSearchService(SearchService):
     @backoff.on_exception(backoff.expo,
                           (ConnectionError, TransportError,
                            ConnectionTimeout, ConnectionRefusedError),
-                          max_time=settings.ELASTIC_BACKOFF_MAX_TIME_SEC,
+                          max_time=config.ELASTIC_BACKOFF_MAX_TIME_SEC,
                           jitter=None,
                           on_backoff=elastic_backoff)
     async def _get_objs_from_elastic(self, query) -> list[Film | Genre | Person]:
@@ -96,7 +96,7 @@ class ElasticSearchService(SearchService):
     @backoff.on_exception(backoff.expo,
                           (ConnectionError, TransportError,
                            ConnectionTimeout, ConnectionRefusedError),
-                          max_time=settings.ELASTIC_BACKOFF_MAX_TIME_SEC,
+                          max_time=config.ELASTIC_BACKOFF_MAX_TIME_SEC,
                           jitter=None,
                           on_backoff=elastic_backoff)
     async def _get_by_id_from_elastic(self, id: str) -> pd.BaseModel | None:

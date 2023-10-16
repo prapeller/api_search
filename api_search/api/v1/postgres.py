@@ -3,6 +3,7 @@ import subprocess
 
 import fastapi as fa
 
+from core.config import BASE_DIR
 from core.enums import EnvEnum
 
 router = fa.APIRouter()
@@ -12,7 +13,7 @@ router = fa.APIRouter()
 def postgres_dump(
         env: EnvEnum = EnvEnum.local,
 ):
-    script_path = f"{os.getcwd()}/scripts/postgres/dump.sh"
+    script_path = BASE_DIR / 'api_search/scripts/postgres/dump.sh'
     assert os.path.isfile(script_path)
     result = subprocess.run(script_path, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env={'ENV': env})
     return {
@@ -23,7 +24,7 @@ def postgres_dump(
 
 @router.get("/check-dumps")
 def postgres_check_dumps():
-    script_path = f"{os.getcwd()}/scripts/postgres/check_dumps.sh"
+    script_path = BASE_DIR / 'api_search/scripts/postgres/check_dumps.sh'
     assert os.path.isfile(script_path)
     result = subprocess.run(script_path, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return {
@@ -34,7 +35,7 @@ def postgres_check_dumps():
 
 @router.get("/download-last-dump")
 def postgres_download_last_dump():
-    file_path = f"{os.getcwd()}/staticfiles/backups/dump_last"
+    file_path = BASE_DIR / 'api_search/staticfiles/backups/dump_last'
     assert os.path.isfile(file_path)
     headers = {'Content-Disposition': 'attachment',
                'Content-Type': 'application/octet-stream'}
@@ -46,11 +47,11 @@ async def postgres_restore(
         dump_file: fa.UploadFile,
         env: EnvEnum = EnvEnum.local,
 ):
-    script_path = f"{os.getcwd()}/scripts/postgres/restore_from_dump.sh"
+    script_path = BASE_DIR / 'api_search/scripts/postgres/restore_from_dump.sh'
     assert os.path.isfile(script_path)
 
     contents = await dump_file.read()
-    uploaded_file_path = f'staticfiles/backups/uploaded_dump'
+    uploaded_file_path = BASE_DIR / 'api_search/staticfiles/backups/uploaded_dump'
     with open(uploaded_file_path, 'wb') as uploaded:
         uploaded.write(contents)
 

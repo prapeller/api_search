@@ -5,7 +5,7 @@ import pytest
 
 from core.enums import ResponseDetailEnum, PersonFilterByEnum, FilterConditionsEnum
 from db.models.person import PersonFilms
-from tests.functional.settings import test_settings
+from tests.conftest import test_settings
 from tests.functional.testdata.persons import get_ids_persons
 
 pytestmark = pytest.mark.asyncio

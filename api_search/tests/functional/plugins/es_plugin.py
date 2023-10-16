@@ -3,7 +3,7 @@ from typing import Iterable
 import pytest_asyncio
 from elasticsearch import AsyncElasticsearch, NotFoundError
 
-from tests.functional.settings import test_settings
+from tests.conftest import test_settings
 from tests.functional.utils.helpers import get_es_bulk_query_str
 
 

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd api_search
+python3 main.py

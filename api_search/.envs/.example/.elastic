@@ -1,4 +1,0 @@
-discovery.type=single-node
-xpack.security.enabled=false
-ELASTIC_HOST
-ELASTIC_PORT

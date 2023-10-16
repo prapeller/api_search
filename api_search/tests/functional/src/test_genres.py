@@ -5,7 +5,7 @@ import pytest
 
 from core.enums import ResponseDetailEnum, GenreFilterByEnum, FilterConditionsEnum
 from db.models.genre import Genre
-from tests.functional.settings import test_settings
+from tests.conftest import test_settings
 from tests.functional.testdata.genres import get_ids_genres
 
 pytestmark = pytest.mark.asyncio

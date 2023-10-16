@@ -1,0 +1,6 @@
+#!/bin/bash
+set -o pipefail # if none of pipecommand fails, exit fails
+
+cd etl_postgres_to_elastic
+rm state
+python3 etl.py

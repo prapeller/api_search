@@ -5,7 +5,7 @@ import pytest
 
 from core.enums import ResponseDetailEnum, FilmFilterByEnum, FilterConditionsEnum
 from db.models.film import Film
-from tests.functional.settings import test_settings
+from tests.conftest import test_settings
 from tests.functional.testdata.films import get_ids_films
 
 pytestmark = pytest.mark.asyncio

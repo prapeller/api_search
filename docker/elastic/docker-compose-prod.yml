@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+
+  elastic_search:
+    build:
+      context: .
+      dockerfile: ./docker/elastic/Dockerfile
+    container_name: elastic_search
+    volumes:
+      - local_elastic_search_data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: [ "CMD", "curl", "--write-out", "'HTTP %{http_code}'",
+              "--fail", "--silent", "--output", "/dev/null", "http://elastic_search:9200/" ]
+      interval: 1s
+      retries: 30
+    networks:
+      - local_network_search
+      - shared_network
+    env_file:
+      - .envs/.prod/.elastic
+
+networks:
+  local_network_search:
+    driver: bridge
+  shared_network:
+    external: true
+
+volumes:
+  local_elastic_search_data: { }
