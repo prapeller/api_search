@@ -65,6 +65,9 @@ api-check-ip:
 api-etl-postgres-elastic-build-loc:
 	docker-compose $(API_SEARCH_LOCAL) up --build -d --remove-orphans --no-deps etl_postgres_to_elastic_search
 
+api-etl-postgres-elastic-restart-loc:
+	docker-compose $(API_SEARCH_LOCAL) restart etl_postgres_to_elastic_search
+
 api-redis-build-loc:
 	docker-compose $(API_SEARCH_LOCAL) up --build -d --remove-orphans --no-deps redis_search
 

@@ -17,8 +17,9 @@ https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-c
 # 2) Run locally in docker-compose
 - install docker, docker-compose
 - > make build-loc
+- if some services cant build bcz other unhealthy - try again make build-loc...
 - swagger docs can be found at 127.0.0.1:84/docs
 - restore there postgres with POST /api/v1/postgres/restore-from-dump choosing file ./api_search_postgres_dump and 'env' = 'docker-compose-local'
-- > make api-etl-postgres-elastic-build-loc
+- > make api-etl-postgres-elastic-restart-loc
 - > make django-superuser-loc
 - django admin can be found at 127.0.0.1:88/admin
