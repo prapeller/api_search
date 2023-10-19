@@ -1,7 +1,8 @@
 from api.v1.shared import Router
 from core.dependencies import (
     film_filter_params_dependency,
-    es_service_film_dependency)
+    es_service_film_dependency,
+)
 from core.enums import FilmOrderByEnum, ResponseDetailEnum
 from db.models.film import Film, PaginatedFilmsReadTitleRating
 

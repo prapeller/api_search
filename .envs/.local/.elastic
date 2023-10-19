@@ -1,4 +1,12 @@
 discovery.type=single-node
 xpack.security.enabled=false
+
 ELASTIC_HOST=127.0.0.1
 ELASTIC_PORT=9204
+
+ELASTIC_MOVIES=movies
+ELASTIC_PERSONS=persons
+ELASTIC_GENRES=genres
+
+TIMEOUT=10
+STATE_FILENAME=state

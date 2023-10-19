@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+  django_search:
+    build:
+      context: ../..
+      dockerfile: ./docker/django/Dockerfile
+      args:
+        - BUILD_ENV=prod
+    command: /start_django
+    container_name: django_search
+    volumes:
+      - ../..:/app
+      - static_volume:/app/django_search/staticfiles
+      - media_volume:/app/django_search/mediafiles
+    expose:
+      - "8004"
+    env_file:
+      - ../../.envs/.prod/.django
+      - ../../.envs/.prod/.postgres
+    networks:
+      - local_network_search
+      - shared_network
+
+  nginx_django_search:
+    restart: always
+    build:
+      context: ../..
+      dockerfile: ./docker/django/nginx/Dockerfile
+    container_name: nginx_django_search
+    volumes:
+      - static_volume:/app/django_search/staticfiles
+      - media_volume:/app/django_search/mediafiles
+    ports:
+      - "88:88"
+    env_file:
+      - ../../.envs/.prod/.django
+    depends_on:
+      - django_search
+    networks:
+      - local_network_search
+      - shared_network
+
+networks:
+  local_network_search:
+    driver: bridge
+  shared_network:
+    external: true
+
+volumes:
+  static_volume:
+  media_volume:

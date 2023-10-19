@@ -1,0 +1,5 @@
+DEBUG=True
+DOCKER=False
+DJANGO_SETTINGS_MODULE=api.settings.local
+ADMIN_URL=admin
+SECRET_KEY=topsupersecretkey
