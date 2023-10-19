@@ -50,13 +50,13 @@ class PostgresExtractor:
         """
         if modified:
             edited_films_query = f"SELECT DISTINCT film.uuid \
-                            FROM content.film AS film \
-                            LEFT JOIN content.film_person AS film_person ON film_person.film_uuid = film.uuid \
-                            LEFT JOIN content.person AS person ON person.uuid = film_person.person_uuid \
-                            LEFT JOIN content.film_genre AS film_genre ON film_genre.film_uuid = film.uuid \
-                            LEFT JOIN content.genre AS genre ON genre.uuid = film_genre.genre_uuid \
-                            WHERE GREATEST(film.updated_at, person.updated_at, genre.updated_at) > '{self.last_modified}' \
-                            ORDER BY film.uuid"
+            FROM content.film AS film \
+            LEFT JOIN content.film_person AS film_person ON film_person.film_uuid = film.uuid \
+            LEFT JOIN content.person AS person ON person.uuid = film_person.person_uuid \
+            LEFT JOIN content.film_genre AS film_genre ON film_genre.film_uuid = film.uuid \
+            LEFT JOIN content.genre AS genre ON genre.uuid = film_genre.genre_uuid \
+            WHERE GREATEST(film.updated_at, person.updated_at, genre.updated_at) > '{self.last_modified}' \
+            ORDER BY film.uuid"
         else:
             edited_films_query = "select distinct film.uuid \
                             from content.film as film \

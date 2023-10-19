@@ -162,17 +162,11 @@ django-rebuild-index:
 
 
 
-postgres-build-loc:
-	docker-compose $(POSTGRES_SEARCH_LOCAL) up --build -d  --remove-orphans --no-deps postgres_search
-
 postgres-build:
 	docker-compose $(POSTGRES_SEARCH_PROD) up --build -d  --remove-orphans --no-deps postgres_search
 
 postgres-build-loc:
 	docker-compose $(POSTGRES_SEARCH_LOCAL) up --build -d  --remove-orphans --no-deps postgres_search
-
-postgres-build:
-	docker-compose $(POSTGRES_SEARCH_PROD) up --build -d  --remove-orphans --no-deps postgres_search
 
 postgres-down-loc:
 	docker-compose $(POSTGRES_SEARCH_LOCAL) down

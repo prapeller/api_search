@@ -23,7 +23,8 @@ class StateManager:
                 state = f.read()
                 if state:
                     a = state.strip()
-                    logging.log(logging.INFO, f"loaded from {self.state_file}:  {datetime.datetime.strptime(a, '%Y-%m-%d %H:%M:%S')}")
+                    logging.log(logging.INFO,
+                                f"loaded from {self.state_file}:  {datetime.datetime.strptime(a, '%Y-%m-%d %H:%M:%S')}")
                     self.state = datetime.datetime.strptime(a, '%Y-%m-%d %H:%M:%S')
                     return self.state
                 else:
@@ -37,5 +38,6 @@ class StateManager:
         :return:
         """
         with open(self.state_file, 'w') as f:
-            logging.log(logging.INFO, f"saved to {self.state_file}:  {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+            logging.log(logging.INFO,
+                        f"saved to {self.state_file}:  {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
             f.write(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))

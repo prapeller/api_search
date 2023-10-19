@@ -2,7 +2,7 @@ import uuid
 
 from django.contrib import admin
 from django.core.validators import MinValueValidator, MaxValueValidator
-from django.db import models, connection
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
@@ -37,21 +37,6 @@ class Updated(models.Model):
 
     class Meta:
         abstract = True
-
-
-# class IdentifiedWithIDNotPrimary(models.Model):
-#     id = models.IntegerField(unique=True, null=True, blank=True)
-#
-#     class Meta:
-#         abstract = True
-#
-#     def save(self, *args, **kwargs):
-#         if self.id is None:
-#             with connection.cursor() as cursor:
-#                 sequence_name = f"{self.__class__.__name__.lower()}_integer_id_seq"
-#                 cursor.execute(f"SELECT nextval('{sequence_name}')")
-#                 self.id = cursor.fetchone()[0]
-#         super().save(*args, **kwargs)
 
 
 class TypeChoices(models.TextChoices):

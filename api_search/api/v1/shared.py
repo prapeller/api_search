@@ -1,9 +1,7 @@
-import uuid
 from enum import Enum
 
 import fastapi as fa
 import pydantic as pd
-
 from core.dependencies import pagination_params_dependency
 from core.enums import OrderEnum
 from services.searchservice import SearchService
@@ -48,8 +46,8 @@ class Router:
                 search_service: SearchService = fa.Depends(self.search_service_dependency),
         ):
             must_be_ordered = not any(param is None for param in (order_by, order))
-            must_be_filtered = not (not filter_params
-                                    or any(param_value is None for param_key, param_value in filter_params.items()))
+            must_be_filtered = not (not filter_params or any(
+                param_value is None for param_key, param_value in filter_params.items()))
             if must_be_filtered:
                 await search_service.filter(**filter_params)
             if must_be_ordered:
