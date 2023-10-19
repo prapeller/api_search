@@ -33,7 +33,7 @@ async def shutdown():
 
 
 v1_router_auth = fa.APIRouter(
-    # dependencies=[fa.Depends(verified_access_token_dependency)],
+    dependencies=[fa.Depends(verified_access_token_dependency)],
 )
 v1_router_auth.include_router(FilmsRouterV1().router, prefix='/films', tags=['films'])
 v1_router_auth.include_router(GenresRouterV1().router, prefix='/genres', tags=['genres'])
