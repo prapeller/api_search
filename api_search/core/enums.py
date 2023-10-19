@@ -51,7 +51,7 @@ class ElasticIndexEnum(str, Enum):
 
 
 class FilmOrderByEnum(str, Enum):
-    id = 'id'
+    uuid = 'uuid'
     imdb_rating = 'imdb_rating'
     title = 'title.raw'
     genre = 'genre.name.raw'
@@ -65,7 +65,7 @@ class FilmOrderByEnum(str, Enum):
 
 
 class FilmFilterByEnum(str, Enum):
-    id = 'id'
+    uuid = 'uuid'
     imdb_rating = 'imdb_rating'
     title = 'title.raw'
     genre = 'genre.name.raw'
@@ -81,7 +81,7 @@ class FilmFilterByEnum(str, Enum):
 
 
 class GenreOrderByEnum(str, Enum):
-    id = 'id'
+    uuid = 'uuid'
     name = 'name.raw'
 
     def __str__(self):
@@ -92,7 +92,7 @@ class GenreOrderByEnum(str, Enum):
 
 
 class GenreFilterByEnum(str, Enum):
-    id = 'id'
+    uuid = 'uuid'
     name = 'name.raw'
 
     def __str__(self):
@@ -103,7 +103,7 @@ class GenreFilterByEnum(str, Enum):
 
 
 class PersonOrderByEnum(str, Enum):
-    id = 'id'
+    uuid = 'uuid'
     name = 'name.raw'
 
     def __str__(self):
@@ -114,7 +114,7 @@ class PersonOrderByEnum(str, Enum):
 
 
 class PersonFilterByEnum(str, Enum):
-    id = 'id'
+    uuid = 'uuid'
     name = 'name.raw'
 
     def __str__(self):

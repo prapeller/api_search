@@ -62,12 +62,12 @@ class Router:
             return paginated_objs
 
     def get_by_id(self):
-        @self.router.get('/{id}', response_model=self.obj_response_model)
+        @self.router.get('/{uuid}', response_model=self.obj_response_model)
         async def get_item_by_id(
-                id: uuid.UUID,
+                uuid: pd.UUID4,
                 search_service=fa.Depends(self.search_service_dependency),
         ):
-            obj = await search_service.get_by_id(id)
+            obj = await search_service.get_by_uuid(str(uuid))
             if not obj:
                 raise fa.HTTPException(status_code=fa.status.HTTP_404_NOT_FOUND, detail=self.obj_not_found_detail)
             return obj

@@ -9,7 +9,7 @@ def orjson_dumps(v, *, default):
 
 
 class IdMixin(pd.BaseModel):
-    id: UUID = pd.Field(default_factory=uuid4)
+    uuid: UUID = pd.Field(default_factory=uuid4)
 
     class Config:
         json_loads = orjson.loads

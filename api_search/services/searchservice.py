@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 class SearchService(ABC):
 
     @abstractmethod
-    async def get_by_id(self, *args, **kwargs):
+    async def get_by_uuid(self, *args, **kwargs):
         pass
 
     @abstractmethod
@@ -58,16 +58,16 @@ class ElasticSearchService(SearchService):
         self.Model = Model
         self.query = {}
 
-    async def get_by_id(self, id: str) -> pd.BaseModel | None:
-        cache = await self.cache.get_cache(id)
+    async def get_by_uuid(self, uuid: str) -> pd.BaseModel | None:
+        cache = await self.cache.get_cache(uuid)
         if cache is None:
-            obj = await self._get_by_id_from_elastic(id)
+            obj = await self._get_by_id_from_elastic(uuid)
             if not obj:
                 return None
             await self._set_obj_to_cache(obj)
             return obj
         if cache:
-            return self.Model.parse_raw(cache)
+            return self.Model.model_validate_json(cache)
 
     @backoff.on_exception(backoff.expo,
                           (ConnectionError, TransportError,
@@ -99,17 +99,17 @@ class ElasticSearchService(SearchService):
                           max_time=config.ELASTIC_BACKOFF_MAX_TIME_SEC,
                           jitter=None,
                           on_backoff=elastic_backoff)
-    async def _get_by_id_from_elastic(self, id: str) -> pd.BaseModel | None:
+    async def _get_by_id_from_elastic(self, uuid: str) -> pd.BaseModel | None:
         try:
-            doc = await self.elastic.get(index=self.index, id=id)
+            doc = await self.elastic.get(index=self.index, id=uuid)
         except NotFoundError:
             return None
         return self.Model(**doc['_source'])
 
     async def _set_obj_to_cache(self, obj: pd.BaseModel):
-        id = str(obj.id)
-        data = obj.json()
-        await self.cache.set_cache(id, data)
+        key = str(obj.uuid)
+        data = obj.model_dump_json()
+        await self.cache.set_cache(key, data)
 
     async def search(self) -> list[pd.BaseModel]:
         logger.info(f'search {self.query=:}')
