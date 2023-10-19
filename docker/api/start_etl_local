@@ -1,6 +1,6 @@
 #!/bin/bash
 set -o pipefail # if none of pipecommand fails, exit fails
 
-cd etl_postgres_to_elastic
-rm state
+rm /app/api_search/services/etl_postgres_to_elastic/state
+cd api_search
 python3 etl.py

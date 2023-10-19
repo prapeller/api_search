@@ -1,11 +1,11 @@
 import logging
 from time import sleep
 
-from config import settings
-from helpers.extract import PostgresExtractor
-from helpers.load import ElasticSearchSender
-from helpers.stateman import StateManager
-from helpers.transform import transform
+from services.etl_postgres_to_elastic.config import settings
+from services.etl_postgres_to_elastic.helpers.extract import PostgresExtractor
+from services.etl_postgres_to_elastic.helpers.load import ElasticSearchSender
+from services.etl_postgres_to_elastic.helpers.stateman import StateManager
+from services.etl_postgres_to_elastic.helpers.transform import transform
 
 logging.basicConfig(level=logging.INFO)
 logging.getLogger('backoff').addHandler(logging.StreamHandler())

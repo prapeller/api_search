@@ -197,6 +197,18 @@ elastic-build:
 elastic-build-loc:
 	docker-compose $(ELASTIC_SEARCH_LOCAL)  up --build -d  --remove-orphans --no-deps elastic_search
 
+elastic-down:
+	docker-compose $(ELASTIC_SEARCH_PROD) down
+
+elastic-down-loc:
+	docker-compose $(ELASTIC_SEARCH_LOCAL) down
+
+elastic-down-v:
+	docker-compose $(ELASTIC_SEARCH_PROD) down -v
+
+elastic-down-v-loc:
+	docker-compose $(ELASTIC_SEARCH_LOCAL) down -v
+
 
 
 check-config:

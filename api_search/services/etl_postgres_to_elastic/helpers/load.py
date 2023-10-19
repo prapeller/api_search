@@ -8,6 +8,8 @@ from elasticsearch.exceptions import (ConnectionError, ConnectionTimeout,
                                       TransportError)
 from elasticsearch.helpers import BulkIndexError, streaming_bulk
 
+from services.etl_postgres_to_elastic.config import BASE_DIR
+
 
 class ElasticSearchSender:
     """
@@ -23,7 +25,7 @@ class ElasticSearchSender:
         self.index_body = None
 
     def get_index_from_file(self, entity: str):
-        with open(f'{entity}_index.json') as file:
+        with open(BASE_DIR / f'api_search/services/etl_postgres_to_elastic/{entity}_index.json') as file:
             logging.log(logging.INFO, f"Trying to open {entity + '_index.json'}")
             self.index_body = json.load(file)
             return self.index_body
@@ -47,54 +49,49 @@ class ElasticSearchSender:
         """
         for row in data:
             doc = {
-                'id': row['id'],
-                '_id': row['id'],
-                'imdb_rating': row['rating'],
-                'genre': [{'id': g['id'],
+                '_id': row['uuid'],
+                'uuid': row['uuid'],
+                'imdb_rating': row['imdb_rating'],
+                'genre': [{'uuid': g['uuid'],
                            'name': g['name']}
                           for g in row['genre'].values()],
                 'title': row['title'],
                 'description': row['description'],
-                'director': [{'id': d['id'],
+                'director': [{'uuid': d['uuid'],
                               'name': d['full_name']}
-                             for d in row['director'].values()] if row['director'] else [],
-                'actors_names': [a['full_name'] for a in row['actor'].values()],
-                'writers_names': [w['full_name'] for w in row['writer'].values()],
-                'actors': [{'id': a['id'],
-                            'name': a['full_name']}
-                           for a in row['actor'].values()],
-                'writers': [{'id': w['id'],
-                             'name': w['full_name']}
-                            for w in row['writer'].values()]
+                             for d in row['director'].values()] if row.get('director') else [],
+                'actors_names': [a['full_name'] for a in row['actor'].values()] if row.get('actor') else [],
+                'actors': [{'uuid': a['uuid'], 'name': a['full_name']} for a in row['actor'].values()] if row.get(
+                    'actor') else [],
+                'writers_names': [w['full_name'] for w in row['writer'].values()] if row.get('writer') else [],
+                'writers': [{'uuid': w['uuid'], 'name': w['full_name']} for w in row['writer'].values()] if row.get(
+                    'writer') else []
             }
             logging.log(logging.DEBUG, doc)
             yield doc
 
     def _generate_role_actions(self, data: List[Dict]) -> Generator[Dict, Any, Any]:
         for row in data:
-            if row['id'] and row['name']:
+            if row['uuid'] and row['name']:
                 doc = {
-                    '_id': row['id'],
-                    'id': row['id'],
+                    '_id': row['uuid'],
+                    'uuid': row['uuid'],
                     'name': row['name'],
-                    'films': [{"id": f["id"],
-                               "title": f["title"],
-                               "imdb_rating": f["imdb_rating"]}
-                              for f in row["films"].values()]
+                    'films': [{"uuid": f["uuid"], "title": f["title"], "imdb_rating": f["imdb_rating"]} for f in
+                              row["films"].values()] if row.get("films") else []
                 }
                 logging.log(logging.DEBUG, doc)
                 yield doc
 
     def _generate_genre_actions(self, data: List[Dict]) -> Generator[Dict, Any, Any]:
         for row in data:
-            if row['id'] and row['name']:
+            if row['uuid'] and row['name']:
                 doc = {
-                    '_id': row['id'],
-                    'id': row['id'],
+                    '_id': row['uuid'],
+                    'uuid': row['uuid'],
                     'name': row['name'],
-                    'films': [{"id": f["id"],
-                               "title": f["title"]}
-                              for f in row["films"].values()]
+                    'films': [{"uuid": f["uuid"], "title": f["title"]} for f in row["films"].values()] if row.get(
+                        "films") else []
                 }
                 logging.log(logging.DEBUG, doc)
                 yield doc

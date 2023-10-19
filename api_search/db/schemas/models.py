@@ -2,13 +2,11 @@ import pydantic as pd
 
 
 class PersonSerializer(pd.BaseModel):
-    id: str
     uuid: str
     name: str
 
 
 class FilmSerializer(pd.BaseModel):
-    id: str
     uuid: str
     imdb_rating: float | None
     genre: list[str] = []

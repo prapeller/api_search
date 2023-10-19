@@ -5,10 +5,9 @@ https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-c
 -  rename .envs/.example to .envs/.local, set your variables
 - > python3.11 -m venv venv
 - > source venv/bin/activate && pip install -r api_search/requirements/local.txt && cd api_search/src
-- > make build-redis-loc
-- > make build-elastic-loc
-- > export DEBUG=True
-- > export DOCKER=False
+- > make redis-build-loc
+- > make elastic-build-loc
+- > export DEBUG=True && export DOCKER=False
 - > python main.py
 
 - swagger can be found at 127.0.0.1:8080/[DOCS_URL]

@@ -9,4 +9,4 @@ ELASTIC_PERSONS=persons
 ELASTIC_GENRES=genres
 
 TIMEOUT=10
-STATE_FILENAME=state
+STATE_FILENAME=api_search/services/etl_postgres_to_elastic/state

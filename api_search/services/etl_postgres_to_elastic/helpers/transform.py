@@ -11,65 +11,65 @@ def transform(rows: List[Dict:Any]):
     genres = {}
     persons = {}
     for row in rows:
-        id = row[0]
+        _uuid = row[0]
         title = row[1]
         description = row[2]
-        rating = row[3]
+        imdb_rating = row[3]
         showtype = row[4]
         person_name = row[5]
-        person_id = row[6]
+        person_uuid = row[6]
         role = row[7]
-        genre_id = row[8]
+        genre_uuid = row[8]
         genre_name = row[9]
 
-        if genre_id not in genres:
+        if genre_uuid not in genres:
             genre = {
-                "id": genre_id,
+                "uuid": genre_uuid,
                 "name": genre_name,
                 "films": {}
             }
-            genres[genre_id] = genre
+            genres[genre_uuid] = genre
 
-        if person_id not in persons:
+        if person_uuid not in persons:
             person = {
-                "id": person_id,
+                "uuid": person_uuid,
                 "name": person_name,
                 "films": {}
             }
-            persons[person_id] = person
+            persons[person_uuid] = person
 
-        if id not in movies:
+        if _uuid not in movies:
             movie = {
-                "id": id,
+                "uuid": _uuid,
                 "title": title,
                 "description": description,
-                "rating": rating,
+                "imdb_rating": imdb_rating,
                 "director": {},
                 "actor": {},
                 "writer": {},
                 "genre": {},
                 "type": showtype
             }
-            movies[id] = movie
-        movie = movies[id]
+            movies[_uuid] = movie
+        movie = movies[_uuid]
         if person_name and role:
             person = {
                 "full_name": person_name,
-                "id": person_id
+                "uuid": person_uuid
             }
-            if person_id not in movie[role.lower()].keys():
-                movie[role.lower()][person_id] = person
-            if id not in persons[person_id]['films'].keys():
-                persons[person_id]['films'][id] = {"id": id, "title": title, "imdb_rating": rating}
+            if person_uuid not in movie[role.lower()].keys():
+                movie[role.lower()][person_uuid] = person
+            if _uuid not in persons[person_uuid]['films'].keys():
+                persons[person_uuid]['films'][_uuid] = {"uuid": _uuid, "title": title, "imdb_rating": imdb_rating}
         if genre_name:
             genre = {
                 "name": genre_name,
-                "id": genre_id
+                "uuid": genre_uuid
             }
             if genre_name not in movie['genre'].keys():
-                movie['genre'][genre_id] = genre
-            if id not in genres[genre_id]['films'].keys():
-                genres[genre_id]['films'][id] = {"id": id, "title": title}
+                movie['genre'][genre_uuid] = genre
+            if id not in genres[genre_uuid]['films'].keys():
+                genres[genre_uuid]['films'][_uuid] = {"uuid": _uuid, "title": title}
 
     transformed_movies = [movie for movie in movies.values()]
     transformed_persons = [person for person in persons.values()]
