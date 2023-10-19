@@ -1,7 +1,0 @@
-DEBUG=False
-DOCKER=True
-DJANGO_SETTINGS_MODULE=api.settings.prod
-
-SERVER_HOST=127.0.0.1
-ADMIN_URL=supersecret
-SECRET_KEY=supersecret
