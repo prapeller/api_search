@@ -3,3 +3,5 @@ DOCKER=False
 DJANGO_SETTINGS_MODULE=api.settings.local
 ADMIN_URL=admin
 SECRET_KEY=topsupersecretkey
+DJANGO_SEARCH_HOST=django_search
+DJANGO_SEARCH_PORT=8004
