@@ -1,7 +1,7 @@
 import logging
 from time import sleep
 
-from services.etl_postgres_to_elastic.config import settings
+from core.config import settings
 from services.etl_postgres_to_elastic.helpers.extract import PostgresExtractor
 from services.etl_postgres_to_elastic.helpers.load import ElasticSearchSender
 from services.etl_postgres_to_elastic.helpers.stateman import StateManager
@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.INFO)
 logging.getLogger('backoff').addHandler(logging.StreamHandler())
 
 if __name__ == '__main__':
-    state_manager = StateManager(settings.STATE_FILENAME)
+    state_manager = StateManager(settings.ETL_STATE_FILENAME)
 
     es_sender = ElasticSearchSender(settings.ELASTIC_HOST, settings.ELASTIC_PORT)
     pse = PostgresExtractor({
@@ -29,4 +29,4 @@ if __name__ == '__main__':
         tformed_data = transform(movie_data)
         es_sender.send_data(tformed_data)
         state_manager.save_state()
-        sleep(settings.TIMEOUT)
+        sleep(settings.ETL_LOOP_SLEEP_SECONDS)

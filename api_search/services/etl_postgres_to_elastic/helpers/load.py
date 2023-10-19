@@ -8,7 +8,7 @@ from elasticsearch.exceptions import (ConnectionError, ConnectionTimeout,
                                       TransportError)
 from elasticsearch.helpers import BulkIndexError, streaming_bulk
 
-from services.etl_postgres_to_elastic.config import BASE_DIR
+from core.config import BASE_DIR
 
 
 class ElasticSearchSender:

@@ -2,7 +2,7 @@ import datetime
 import logging
 from typing import AnyStr
 
-from services.etl_postgres_to_elastic.config import BASE_DIR
+from core.config import BASE_DIR
 
 
 class StateManager:

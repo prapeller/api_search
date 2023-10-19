@@ -14,17 +14,29 @@ class Settings(ps.BaseSettings):
 
     API_SEARCH_HOST: str
     API_SEARCH_PORT: int
+    DOCS_URL: str = 'docs'
 
     API_AUTH_HOST: str
     API_AUTH_PORT: int
 
     REDIS_HOST: str
     REDIS_PORT: int
+    REDIS_CACHE_EXPIRE_IN_SECONDS: int
+
+    POSTGRES_DB: str
+    POSTGRES_USER: str
+    POSTGRES_PASSWORD: str
+    POSTGRES_HOST: str
+    POSTGRES_PORT: int
 
     ELASTIC_HOST: str
     ELASTIC_PORT: int
+    ELASTIC_MOVIES: str
+    ELASTIC_PERSONS: str
+    ELASTIC_GENRES: str
 
-    DOCS_URL: str = 'docs'
+    ETL_LOOP_SLEEP_SECONDS: int
+    ETL_STATE_FILENAME: str
 
     class Config:
         extra = 'allow'
@@ -33,14 +45,17 @@ class Settings(ps.BaseSettings):
         if DEBUG and DOCKER:
             super().__init__(_env_file=[BASE_DIR / '.envs/.docker-compose-local/.api',
                                         BASE_DIR / '.envs/.docker-compose-local/.elastic',
+                                        BASE_DIR / '.envs/.docker-compose-local/.postgres',
                                         BASE_DIR / '.envs/.docker-compose-local/.redis'])
         elif DEBUG and not DOCKER:
             super().__init__(_env_file=[BASE_DIR / '.envs/.local/.api',
                                         BASE_DIR / '.envs/.local/.elastic',
+                                        BASE_DIR / '.envs/.local/.postgres',
                                         BASE_DIR / '.envs/.local/.redis'])
         else:
             super().__init__(_env_file=[BASE_DIR / '.envs/.prod/.api',
                                         BASE_DIR / '.envs/.prod/.elastic',
+                                        BASE_DIR / '.envs/.prod/.postgres',
                                         BASE_DIR / '.envs/.prod/.redis'])
 
 
@@ -50,5 +65,4 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 settings = Settings(DOCKER, DEBUG, BASE_DIR)
 
-ELASTIC_CACHE_EXPIRE_IN_SECONDS: int = 60 * 5
 ELASTIC_BACKOFF_MAX_TIME_SEC: int = 500
