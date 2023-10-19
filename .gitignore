@@ -135,6 +135,6 @@ dmypy.json
 my_files/
 
 # Project files should stay locally only
-api_search/.envs/.prod*
+.envs/.prod*
 api_search/staticfiles/backups/*
 api_search/services/etl_postgres_to_elastic/state
