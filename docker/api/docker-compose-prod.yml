@@ -4,76 +4,114 @@ services:
 
   redis_search:
     build:
-      context: .
-      dockerfile: ./docker/redis/Dockerfile
+      context: ../..
+      dockerfile: ./docker/api/redis/Dockerfile
     container_name: redis_search
     healthcheck:
       test: [ "CMD-SHELL", "redis-cli", "ping", "|", "grep", "PONG" ]
       interval: 3s
       retries: 3
-    env_file:
-      - .envs/.prod/.redis
     networks:
-      - local_network_search
+      - prod_network_search
+    env_file:
+      - ../../.envs/.prod/.redis
 
   api_search:
     build:
-      context: .
+      context: ../..
       dockerfile: ./docker/api/Dockerfile
       args:
         - BUILD_ENV=prod
-    command: /start_prod
     container_name: api_search
+    command: /start_prod
     volumes:
-      - local_postgres_data_backups:/app/staticfiles/backups
-      - static_volume:/app/staticfiles
-      - media_volume:/app/mediafiles
-      - .:/app
-    depends_on:
-      elastic_search:
-        condition: service_healthy
-      postgres_search:
-        condition: service_healthy
-      redis_search:
-        condition: service_healthy
+      - static_files_search_volume:/app/staticfiles
+      - media_files_search_volume:/app/mediafiles
+      - postgres_backups_search_volume:/app/staticfiles/backups
+      - ../..:/app
     healthcheck:
       test: [ "CMD-SHELL", "curl --fail -f http://$$API_SEARCH_HOST:$$API_SEARCH_PORT/docs" ]
       interval: 3s
       retries: 3
     env_file:
-      - .envs/.prod/.postgres
-      - .envs/.prod/.api
-      - .envs/.prod/.redis
+      - ../../.envs/.prod/.postgres
+      - ../../.envs/.prod/.api
+      - ../../.envs/.prod/.redis
     networks:
-      - local_network_search
+      - prod_network_search
       - shared_network
     expose:
-      - "8081"
+      - "8084"
+
+  etl_postgres_to_elastic_search:
+    restart: always
+    build:
+      context: ../..
+      dockerfile: ./docker/api/Dockerfile
+      args:
+        - BUILD_ENV=prod
+    command: /start_etl_prod
+    volumes:
+      - ../..:/app
+    networks:
+      - prod_network_search
+      - shared_network
+    env_file:
+      - ../../.envs/.prod/.api
+      - ../../.envs/.prod/.redis
+      - ../../.envs/.prod/.elastic
+      - ../../.envs/.prod/.postgres
+
 
   nginx_search:
     restart: always
     build:
-      context: .
-      dockerfile: ./docker/nginx/Dockerfile
+      context: ../..
+      dockerfile: ./docker/api/nginx/Dockerfile
     container_name: nginx_search
+    env_file:
+      - ../../.envs/.prod/.api
     volumes:
-      - static_volume:/app/staticfiles
-      - media_volume:/app/mediafiles
+      - static_files_search_volume:/app/staticfiles
+      - media_files_search_volume:/app/mediafiles
     depends_on:
       - api_search
-    env_file:
-      - .envs/.prod/.api
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "nginx_search", "84" ]
+      interval: 3s
+      timeout: 10s
+      retries: 3
     networks:
-      - local_network_search
-    ports:
-      - "84:84"
+      - prod_network_search
+      - shared_network
+
+  tests_search:
+    build:
+      context: ../..
+      dockerfile: ./docker/api/Dockerfile
+      args:
+        - BUILD_ENV=prod
+    command: /start_tests
+    container_name: tests_search
+    volumes:
+      - ../..:/app
+    env_file:
+      - ../../.envs/.prod/.tests
+      - ../../.envs/.prod/.redis
+    depends_on:
+      api_search:
+        condition: service_healthy
+    networks:
+      - prod_network_search
+
 
 networks:
-  local_network_search:
+  prod_network_search:
     driver: bridge
   shared_network:
     external: true
 
 volumes:
-  static_volume: { }
-  media_volume: { }
+  static_files_search_volume:
+  media_files_search_volume:
+  postgres_backups_search_volume:

@@ -78,13 +78,13 @@ services:
     volumes:
       - static_files_search_volume:/app/staticfiles
       - media_files_search_volume:/app/mediafiles
-    ports:
-      - "84:84"
     depends_on:
       - api_search
     networks:
       - local_network_search
       - shared_network
+    ports:
+      - "84:84"
 
   tests_search:
     build:
