@@ -3,10 +3,10 @@ ELASTIC_SEARCH_LOCAL := -p elastic_search -f ./docker/elastic/docker-compose-loc
 POSTGRES_SEARCH_LOCAL := -p postgres_search -f ./docker/postgres/docker-compose-local.yml
 DJANGO_SEARCH_LOCAL := -p django_search -f ./docker/django/docker-compose-local.yml
 
-API_SEARCH_PROD := -p api_search -f ./docker/api/docker-compose-prod.yml
-ELASTIC_SEARCH_PROD := -p elastic_search -f ./docker/elastic/docker-compose-prod.yml
-POSTGRES_SEARCH_PROD := -p postgres_search -f ./docker/postgres/docker-compose-prod.yml
-DJANGO_SEARCH_PROD := -p django_search -f ./docker/django/docker-compose-prod.yml
+API_SEARCH_PROD := -p api_search -f ./docker/api/prod.yml
+ELASTIC_SEARCH_PROD := -p elastic_search -f ./docker/elastic/prod.yml
+POSTGRES_SEARCH_PROD := -p postgres_search -f ./docker/postgres/prod.yml
+DJANGO_SEARCH_PROD := -p django_search -f ./docker/django/prod.yml
 
 build-loc:
 	@docker network create shared_network || true
@@ -70,6 +70,9 @@ api-etl-postgres-elastic-restart-loc:
 
 api-redis-build-loc:
 	docker-compose $(API_SEARCH_LOCAL) up --build -d --remove-orphans --no-deps redis_search
+
+api-nginx-build-loc:
+	docker-compose $(API_SEARCH_LOCAL) up --build -d  --remove-orphans --no-deps nginx_search
 
 api-tests-build-loc:
 	docker-compose $(API_SEARCH_LOCAL) up --build -d --remove-orphans --no-deps tests_search
@@ -221,11 +224,6 @@ check-logs:
 
 check-logs-loc:
 	docker-compose $(API_SEARCH_LOCAL) logs
-
-
-
-nginx-build:
-	docker-compose $(API_SEARCH_PROD) up --build -d  --remove-orphans --no-deps nginx
 
 
 
