@@ -2,5 +2,4 @@
 set -o pipefail # if none of pipecommand fails, exit fails
 
 rm /app/api_search/services/etl_postgres_to_elastic/state
-cd api_search
 python3 etl.py

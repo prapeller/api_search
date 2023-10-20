@@ -12,7 +12,7 @@ RUN pip wheel --wheel-dir /usr/src/app/wheels -r ${BUILD_ENV}.txt
 
 FROM my_python as python-run-stage
 
-ARG APP_HOME=/app
+ARG APP_HOME=/app/api_search
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
