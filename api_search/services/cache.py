@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from redis.asyncio import Redis
 from redis.exceptions import RedisError
 
-from core.config import settings
+from core import config
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +28,7 @@ class RedisCache(Cache):
     async def set_cache(self, cache_key, data):
         try:
             logger.info(f'set to cache by {cache_key=:} {data=:}')
-            await self.redis.set(cache_key, data, settings.REDIS_CACHE_EXPIRE_IN_SECONDS)
+            await self.redis.set(cache_key, data, config.REDIS_CACHE_EXPIRES_IN_SECONDS)
         except RedisError as e:
             logger.warning(f'failed to set data to cache for {cache_key=:}: {e}')
 

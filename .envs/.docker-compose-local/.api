@@ -12,5 +12,3 @@ DOCS_URL=docs
 
 ETL_LOOP_SLEEP_SECONDS=10
 ETL_STATE_FILENAME=api_search/services/etl_postgres_to_elastic/state
-
-REDIS_CACHE_EXPIRE_IN_SECONDS=30

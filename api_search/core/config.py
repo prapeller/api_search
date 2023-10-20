@@ -21,7 +21,6 @@ class Settings(ps.BaseSettings):
 
     REDIS_HOST: str
     REDIS_PORT: int
-    REDIS_CACHE_EXPIRE_IN_SECONDS: int
 
     POSTGRES_DB: str
     POSTGRES_USER: str
@@ -66,3 +65,4 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 settings = Settings(DOCKER, DEBUG, BASE_DIR)
 
 ELASTIC_BACKOFF_MAX_TIME_SEC: int = 500
+REDIS_CACHE_EXPIRES_IN_SECONDS: int = 30
