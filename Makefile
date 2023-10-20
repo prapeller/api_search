@@ -213,17 +213,29 @@ elastic-down-v-loc:
 
 check-config:
 	docker-compose $(API_SEARCH_PROD) config
+	docker-compose $(POSTGRES_SEARCH_PROD) config
+	docker-compose $(ELASTIC_SEARCH_PROD) config
+	docker-compose $(DJANGO_SEARCH_PROD) config
 
 check-config-loc:
 	docker-compose $(API_SEARCH_LOCAL) config
+	docker-compose $(POSTGRES_SEARCH_LOCAL) config
+	docker-compose $(ELASTIC_SEARCH_LOCAL) config
+	docker-compose $(DJANGO_SEARCH_LOCAL) config
 
 
 
 check-logs:
 	docker-compose $(API_SEARCH_PROD) logs
+	docker-compose $(POSTGRES_SEARCH_PROD) logs
+	docker-compose $(ELASTIC_SEARCH_PROD) logs
+	docker-compose $(DJANGO_SEARCH_PROD) logs
 
 check-logs-loc:
 	docker-compose $(API_SEARCH_LOCAL) logs
+	docker-compose $(POSTGRES_SEARCH_LOCAL) logs
+	docker-compose $(ELASTIC_SEARCH_LOCAL) logs
+	docker-compose $(DJANGO_SEARCH_LOCAL) logs
 
 
 
