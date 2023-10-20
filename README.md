@@ -1,7 +1,4 @@
-# 1) Run locally
-- install docker, docker-compose
-https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-22-04
-https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04
+# 1) Deploy locally (api at host)
 - > make api-redis-build-loc
 - > make postgres-build-loc
 - > make elastic-build-loc
@@ -14,8 +11,7 @@ https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-c
 - > make api-etl-postgres-elastic-build-loc
 - django admin can be found at 127.0.0.1:88/admin
 
-# 2) Run locally in docker-compose
-- install docker, docker-compose
+# 2) Deploy locally (api at docker container)
 - > make build-loc
 - if some services cant build bcz other unhealthy - try again make build-loc...
 - swagger docs can be found at 127.0.0.1:84/docs
