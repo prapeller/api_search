@@ -58,8 +58,8 @@ class Settings(ps.BaseSettings):
                                         BASE_DIR / '.envs/.prod/.redis'])
 
 
-DEBUG = True if os.getenv('DEBUG', 'False') == 'True' else False
-DOCKER = True if os.getenv('DOCKER', 'False') == 'True' else False
+DEBUG = os.getenv('DEBUG', False) == 'True'
+DOCKER = os.getenv('DOCKER', False) == 'True'
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 settings = Settings(DOCKER, DEBUG, BASE_DIR)
