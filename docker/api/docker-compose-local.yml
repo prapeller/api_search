@@ -80,11 +80,7 @@ services:
       - media_files_search_volume:/app/mediafiles
     depends_on:
       - api_search
-    networks:
-      - local_network_search
-      - shared_network
-    ports:
-      - "84:84"
+    network_mode: host
 
   tests_search:
     build:
