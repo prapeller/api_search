@@ -124,7 +124,7 @@ oauth2_scheme_local = OAuth2PasswordBearer(
 async def verified_access_token_dependency(
         request: fa.Request,
         access_token: str = fa.Depends(oauth2_scheme_local),
-):
+) -> dict:
     url = f"http://{settings.API_AUTH_HOST}:{settings.API_AUTH_PORT}/api/v1/auth/verify-access-token"
     headers = {
         'accept': 'application/json',
@@ -132,7 +132,7 @@ async def verified_access_token_dependency(
     }
     data = {
         'useragent': request.headers.get("user-agent"),
-        'ip': request.client.host,
+        'ip': request.headers.get('X-Forwarded-For'),
         'access_token': access_token,
     }
     async with httpx.AsyncClient() as client:
