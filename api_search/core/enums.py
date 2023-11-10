@@ -135,3 +135,14 @@ class ResponseDetailEnum(str, Enum):
     persons_not_found = 'persons not found'
     person_not_found = 'person not found'
     another_string = 'another string for using in response detail maybe will be needed in future just for any case'
+
+
+class ServicesNamesEnum(str, Enum):
+    etl_from_postgres_to_vector = 'etl_from_postgres_to_vector'
+    api_recommendations = 'api_recommendations'
+
+    def __str__(self):
+        return str(self.value)
+
+    def __repr__(self):
+        return str(self)

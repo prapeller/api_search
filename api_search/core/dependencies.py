@@ -17,8 +17,10 @@ from core.enums import (
     GenreFilterByEnum,
     PersonFilterByEnum,
     ElasticIndexEnum,
+    ServicesNamesEnum,
 )
 from core.exceptions import UnauthorizedException
+from core.logger_config import logger
 from db.models.film import Film
 from db.models.genre import Genre
 from db.models.person import PersonFilms
@@ -140,3 +142,16 @@ async def verified_access_token_dependency(
     if resp.status_code != fa.status.HTTP_200_OK:
         raise UnauthorizedException
     return json.loads(resp.text)
+
+
+async def verify_service_dependency(
+        request: fa.Request,
+) -> None:
+    auth_header = request.headers.get('Authorization')
+    service_name = request.headers.get('Service-Name')
+    if (not auth_header
+            or service_name not in [str(s) for s in ServicesNamesEnum]
+            or auth_header != settings.SERVICE_TO_SERVICE_SECRET):
+        detail = f"can't verify service request: {auth_header=:} {service_name=:}"
+        logger.error(detail)
+        raise UnauthorizedException(detail)

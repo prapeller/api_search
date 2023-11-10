@@ -1,12 +1,7 @@
 import os
-from logging import config as logging_config
 from pathlib import Path
 
 import pydantic_settings as ps
-
-from core.logger import LOGGING
-
-logging_config.dictConfig(LOGGING)
 
 
 class Settings(ps.BaseSettings):
@@ -36,6 +31,8 @@ class Settings(ps.BaseSettings):
 
     ETL_LOOP_SLEEP_SECONDS: int
     ETL_STATE_FILENAME: str
+
+    SERVICE_TO_SERVICE_SECRET: str
 
     class Config:
         extra = 'allow'
